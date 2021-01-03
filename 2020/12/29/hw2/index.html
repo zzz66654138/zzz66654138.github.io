@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>HW2 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="输出平均得分最高的10部电影名称 画直方图，列出各类别电影的数量，注意同一部电影不要重复计算 输出每部电影的平均得分及标准差,要有电影名称，不含年 输出职业编号为’1’,‘6’，‘16’的user的性别分布，并通过饼状图显示  使用pyspark计算并输出：  使用motify查找并输出所有这样的人：有两个或以上的人关注他，他又至少关注两个或以上的人。  输出pageRank排名前10的所有人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HW2">
+<meta property="og:url" content="http://example.com/2020/12/29/hw2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="输出平均得分最高的10部电影名称 画直方图，列出各类别电影的数量，注意同一部电影不要重复计算 输出每部电影的平均得分及标准差,要有电影名称，不含年 输出职业编号为’1’,‘6’，‘16’的user的性别分布，并通过饼状图显示  使用pyspark计算并输出：  使用motify查找并输出所有这样的人：有两个或以上的人关注他，他又至少关注两个或以上的人。  输出pageRank排名前10的所有人">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-28T22:10:27.000Z">
+<meta property="article:modified_time" content="2021-01-03T11:49:47.580Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-hw2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/29/hw2/" class="article-date">
+  <time class="dt-published" datetime="2020-12-28T22:10:27.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Diary/">Diary</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      HW2
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>输出平均得分最高的10部电影名称</li>
+<li>画直方图，列出各类别电影的数量，注意同一部电影不要重复计算</li>
+<li>输出每部电影的平均得分及标准差,要有电影名称，不含年</li>
+<li>输出职业编号为’1’,‘6’，‘16’的user的性别分布，并通过饼状图显示</li>
+</ol>
+<p>使用pyspark计算并输出：</p>
+<ul>
+<li><p>使用motify查找并输出所有这样的人：有两个或以上的人关注他，他又至少关注两个或以上的人。</p>
+</li>
+<li><p>输出pageRank排名前10的所有人</p>
+</li>
+<li><p>输出入度排名前10的所有人</p>
+<h1 id="file_desc">
+    Content and Use of Files
+  </h1>
+
+  <h2>
+    Character Encoding
+  </h2>
+  <p>
+    The three data files are encoded as 
+    <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Utf-8">UTF-8</a>.  This is a departure
+    from previous MovieLens data sets, which used different character encodings.
+    If accented characters in movie titles or tag values (e.g. Misérables, Les (1995))
+    display incorrectly, make sure that any program reading the data, such as a 
+    text editor, terminal, or script, is configured for UTF-8.
+  </p>
+
+  <h2>
+    User Ids
+  </h2>
+  <p>
+    Movielens users were selected at random for inclusion.  Their ids have been 
+    anonymized.
+  </p>
+  <p>
+    Users were selected separately for inclusion 
+    in the ratings and tags data sets, which implies that user ids may appear in 
+    one set but not the other.
+  </p>
+  <p>
+    The anonymized values are consistent between the ratings and tags data files.  
+    That is, user id <em>n</em>, if it appears in both files, refers to the same
+    real MovieLens user.
+  </p>
+
+  <h2>
+    Ratings Data File Structure
+  </h2>
+  <p>
+    All ratings are contained in the file <code>ratings.dat</code>.  Each line of this 
+    file represents one rating of one movie by one user, and has the following format:
+  </p>
+  <p class="file_line_structure">
+    <code>UserID::MovieID::Rating::Timestamp</code>
+  </p>
+  <p>
+    The lines within this file are ordered first by UserID, then, within user, 
+    by MovieID.
+  </p>
+  <p>
+    Ratings are made on a 5-star scale, with half-star increments.
+  </p>
+  <p>
+    <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Unix_time">Timestamps</a> represent 
+    seconds since midnight Coordinated Universal Time (UTC) of January 1, 1970.
+  </p>
+
+  <h2>
+    Tags Data File Structure
+  </h2>
+  <p>
+    All tags are contained in the file <code>tags.dat</code>.  Each line of this 
+    file represents one tag applied to one movie by one user, and has 
+    the following format:
+  </p>
+  <p class="file_line_structure">
+    <code>UserID::MovieID::Tag::Timestamp</code>
+  </p>
+  <p>
+    The lines within this file are ordered first by UserID, then, within user, 
+    by MovieID.
+  </p>
+  <p>
+    <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Tag_(metadata)">Tags</a> are user 
+    generated metadata about movies.  Each tag is typically a single word, or
+    short phrase.  The meaning, value and purpose of a particular tag is 
+    determined by each user.
+  </p>
+  <p>
+    <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Unix_time">Timestamps</a> represent 
+    seconds since midnight Coordinated Universal Time (UTC) of January 1, 1970.
+  </p>
+
+  <h2>
+    Movies Data File Structure
+  </h2>
+  <p>
+    Movie information is contained in the file <code>movies.dat</code>.  
+    Each line of this file represents one movie, and has the following format:
+  </p>
+  <p class="file_line_structure">
+    <code>MovieID::Title::Genres</code>
+  </p>
+  <p>
+    MovieID is the real MovieLens id.
+  </p>
+  <p>
+    Movie titles, by policy, should be entered identically to those
+    found in <a target="_blank" rel="noopener" href="http://www.imdb.com/">IMDB</a>, including year of release.
+    However, they are entered manually, so errors and inconsistencies may exist.
+  </p>
+  <p>
+    Genres are a pipe-separated list, and are selected from the following:
+  </p>
+  <ul>
+    <li>Action</li>
+    <li>Adventure</li>
+    <li>Animation</li>
+    <li>Children's</li>
+    <li>Comedy</li>
+    <li>Crime</li>
+    <li>Documentary</li>
+    <li>Drama</li>
+    <li>Fantasy</li>
+    <li>Film-Noir</li>
+    <li>Horror</li>
+    <li>Musical</li>
+    <li>Mystery</li>
+    <li>Romance</li>
+    <li>Sci-Fi</li>
+    <li>Thriller</li>
+    <li>War</li>
+    <li>Western</li>
+  </ul>
+
+  <h2>
+    Cross-Validation Subset Generation Scripts
+  </h2>
+  <p>
+    A Unix shell script, <code>split_ratings.sh</code>, is provided that, if desired, 
+    can be used to split the ratings data for five-fold cross-validation
+    of rating predictions.  It depends on a second script, allbut.pl, which 
+    is also included and is written in Perl.  They should run without modification
+    under Linux, Mac OS X, Cygwin or other Unix like systems.
+  </p>
+  <p>
+    Running <code>split_ratings.sh</code> will use <code>ratings.dat</code>
+    as input, and produce the fourteen output files described below.  Multiple
+    runs of the script will produce identical results.
+  </p>
+  <table style="width:75%" border="1">
+    <tr>
+      <th style="width:25%">File Names</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>
+        r1.train, r2.train, r3.train, r4.train, r5.train<br/>
+        r1.test, r2.test, r3.test, r4.test, r5.test<br/>
+       </td>
+       <td>
+         The data sets r1.train and r1.test through r5.train and r5.test
+         are 80%/20% splits of the ratings data into training and test data.
+         Each of r1, ..., r5 have disjoint test sets; this if for
+         5 fold cross validation (where you repeat your experiment
+         with each training and test set and average the results).
+      </td>
+    </tr>
+    <tr>
+      <td>
+        ra.train, rb.train<br/>
+        ra.test, rb.test<br/>
+       </td>
+      <td>
+        The data sets ra.train, ra.test, rb.train, and rb.test
+        split the ratings data into a training set and a test set with
+        exactly 10 ratings per user in the test set.  The sets
+        ra.test and rb.test are disjoint.
+       </td>
+    </tr></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/29/hw2/" data-id="ckjh2sgnu00004co0g17u501z" data-title="HW2" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/31/pyspark-hw1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          pyspark作业记录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/27/leetcode1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">leetcode1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Diary/">Diary</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hw/" rel="tag">hw</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hw/" style="font-size: 10px;">hw</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/03/My-new-post/">My new post</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/03/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/31/jupyter-common1/">jupyter 同wifi互通</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/31/pyspark-hw1/">pyspark作业记录</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/29/hw2/">HW2</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
